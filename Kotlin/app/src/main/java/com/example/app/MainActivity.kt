@@ -50,24 +50,28 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val password = et_password.text.toString()
         val code = et_code.text.toString()
 
-        val user: User = User(username, password, code)
-        if (verify(user)) {
+        val user = User(username, password, code)
+
+        /** 函数嵌套：控制函数作用域。此方式每次调用会生成一个对象，如果频繁调用要考虑性能问题*/
+        fun verify(): Boolean {
+            if ((user.username?.length ?: 0) < 4) { // ?:表示如果为空则返回右侧值
+                toast("用户名不合法")
+                return false
+            }
+            val password = user.password
+            if (password != null && password.length < 4) {
+                toast("密码不合法")
+                return false
+            }
+            return true
+        }
+
+        if (verify()) {
             CacheUtils.save(usernameKey, username)
             CacheUtils.save(passwordKey, password)
             startActivity(Intent(this, LessonActivity::class.java))
         }
     }
 
-    private fun verify(user: User): Boolean {
-        if (user.username != null && user.username!!.length < 4) {
-            toast("用户名不合法")
-            return false
-        }
-        val password = user.password
-        if (password != null && password.length < 4) {
-            toast("密码不合法")
-            return false
-        }
-        return true
-    }
+
 }

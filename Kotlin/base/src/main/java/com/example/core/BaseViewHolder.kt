@@ -8,24 +8,23 @@ import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class BaseViewHolder : RecyclerView.ViewHolder {
-    constructor(@NonNull itemView: View) : super(itemView)
+abstract class BaseViewHolder(@NonNull itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     @SuppressLint("UseSparseArrays")
-    private val viewHashMap = HashMap<Int?, View>();
+    private val viewHashMap = HashMap<Int?, View>()
 
     @SuppressWarnings("unchecked")
     protected fun <T : View> getView(@IdRes id: Int): T {
-        var view = viewHashMap[id];
+        var view = viewHashMap[id]
         if (view == null) {
-            view = itemView.findViewById(id);
-            viewHashMap[id] = view;
+            view = itemView.findViewById(id)
+            viewHashMap[id] = view
         }
         return view as T
     }
 
     protected fun setText(@IdRes id: Int, @Nullable text: String?) {
-        (getView(id) as TextView).text = text;
+        (getView(id) as TextView).text = text
     }
 
 }

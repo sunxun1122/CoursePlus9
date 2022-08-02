@@ -17,4 +17,5 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':lesson')
     implementation project(':base')
+    implementation 'com.squareup.retrofit2:retrofit:2.7.2'
 }

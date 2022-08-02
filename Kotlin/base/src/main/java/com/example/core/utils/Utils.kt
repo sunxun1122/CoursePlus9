@@ -5,19 +5,24 @@ package com.example.core.utils
 import android.content.res.Resources
 import android.util.DisplayMetrics
 import android.util.TypedValue
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import com.example.core.BaseApplication
 
 private val displayMetrics: DisplayMetrics = Resources.getSystem().displayMetrics;
 
-fun dp2px(dp: Float): Float {
-    return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, displayMetrics);
-}
+/**
+ * 扩展函数
+ */
+fun Float.dp2px() = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, this, displayMetrics)
 
-fun toast(string: String) {
-    toast(string, Toast.LENGTH_SHORT);
-}
+/**
+ * 扩展属性
+ */
+val ViewGroup.firstChild: View
+    get() = getChildAt(0)
 
-fun toast(string: String, duration: Int) {
-    Toast.makeText(BaseApplication.currentApplication(), string, duration).show();
-}
+// 生成Java多个对应重载方法
+@JvmOverloads
+fun toast(string: String, duration: Int = Toast.LENGTH_SHORT) = Toast.makeText(BaseApplication.currentApplication, string, duration).show()

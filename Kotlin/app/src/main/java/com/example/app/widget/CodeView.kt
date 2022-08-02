@@ -12,24 +12,13 @@ import com.example.app.R
 import com.example.core.utils.dp2px
 import java.util.*
 
-class CodeView : AppCompatTextView {
-    constructor(context: Context?) : this(context, null)
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {
-        setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f)
-        gravity = Gravity.CENTER
-        setBackgroundColor(getContext().getColor(R.color.colorPrimary))
-        setTextColor(Color.WHITE)
-
-        paint.isAntiAlias = true
-        paint.style = Paint.Style.STROKE
-        paint.color = getContext().getColor(R.color.colorAccent)
-        paint.strokeWidth = dp2px(6f)
-
-        updateCode()
+class CodeView @JvmOverloads constructor(context: Context?, attrs: AttributeSet? = null) : AppCompatTextView(context, attrs) {
+    private var paint: Paint = Paint().apply {
+        isAntiAlias = true
+        style = Paint.Style.STROKE
+        color = getContext().getColor(R.color.colorAccent)
+        strokeWidth = 6f.dp2px()
     }
-
-    private var paint: Paint = Paint()
-
     private var codeList = arrayOf(
         "kotlin",
         "android",
@@ -41,13 +30,22 @@ class CodeView : AppCompatTextView {
         "tcp/ip"
     )
 
+    init {
+        setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f)
+        gravity = Gravity.CENTER
+        setBackgroundColor(getContext().getColor(R.color.colorPrimary))
+        setTextColor(Color.WHITE)
+        updateCode()
+    }
+
+
     fun updateCode() {
         val random: Int = Random().nextInt(codeList.size)
         val code: String = codeList[random]
         text = code
     }
 
-    protected override fun onDraw(canvas: Canvas) {
+    override fun onDraw(canvas: Canvas) {
         canvas.drawLine(0f, height.toFloat(), width.toFloat(), 0f, paint)
         canvas.drawLine(0f, 0f, width.toFloat(), height.toFloat(), paint)
         canvas.drawLine(width.toFloat() / 2, 0f, width.toFloat() / 2, height.toFloat(), paint)

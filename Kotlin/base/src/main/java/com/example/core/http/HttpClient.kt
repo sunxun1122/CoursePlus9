@@ -11,9 +11,7 @@ object HttpClient : OkHttpClient() {
     private val gson = Gson()
 
     @NonNull
-    private fun <T> convert(json: String?, type: Type): T {
-        return gson.fromJson(json, type)
-    }
+    private fun <T> convert(json: String?, type: Type): T = gson.fromJson(json, type)
 
     fun <T : Any> get(path: String, type: Type, entityCallback: EntityCallback<T>) {
         val request = Request.Builder().url("https://api.hencoder.com/$path").build()

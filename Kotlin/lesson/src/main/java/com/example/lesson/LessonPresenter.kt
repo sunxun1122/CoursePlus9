@@ -6,15 +6,9 @@ import com.example.core.utils.toast
 import com.example.lesson.entity.Lesson
 import com.google.gson.reflect.TypeToken
 
-class LessonPresenter {
+class LessonPresenter(private var activity: LessonActivity) {
     companion object {
         private const val LESSON_PATH = "lessons"
-    }
-
-    private var activity: LessonActivity? = null
-
-    constructor(activity: LessonActivity?) {
-        this.activity = activity
     }
 
     private var lessons: List<Lesson> = ArrayList()
@@ -25,23 +19,14 @@ class LessonPresenter {
         get(LESSON_PATH, type, object : EntityCallback<List<Lesson>> {
             override fun onSuccess(lessons: List<Lesson>) {
                 this@LessonPresenter.lessons = lessons
-                activity!!.runOnUiThread { activity!!.showResult(lessons) }
+                activity.runOnUiThread { activity.showResult(lessons) }
             }
 
             override fun onFailure(message: String?) {
-                activity!!.runOnUiThread { toast(message!!) }
+                activity.runOnUiThread { toast(message!!) }
             }
         })
     }
 
-    fun showPlayback() {
-        val playbackLessons: MutableList<Lesson> = ArrayList()
-        for (lesson in lessons) {
-            if (lesson.state === Lesson.State.PLAYBACK) {
-                playbackLessons.add(lesson)
-            }
-        }
-        activity!!.showResult(playbackLessons)
-    }
-
+    fun showPlayback() = activity.showResult(lessons.filter { it.state === Lesson.State.PLAYBACK })
 }
